@@ -59,12 +59,15 @@ class ContactController extends Controller
             'name' => $request->get('first_name')
         ]);
 
+
+
         //Check if the phone number is in the database
         foreach ($request->get('phone') as $row) {
             if (phone_number::where('phone', '=', $row)->exists()) {
                 $check_phone_email = 1;
             }
         }
+
         //Check if the email is in the database
         foreach ($request->get('email') as $row) {
             if (email::where('email', '=', $row)->exists()) {
@@ -72,13 +75,19 @@ class ContactController extends Controller
             }
         }
 
+        if (contact::where('name', '=', $request->get('first_name'))->exists()) {
+            $check_phone_email = 3;
+        }
 
         if ($check_phone_email==1) {
-            return redirect('/addcontact')->with('fail', 'Phone number bor');
+            return redirect('/addcontact')->with('fail', 'This phone number is in the database');
         }
 
         else if($check_phone_email==2){
-            return redirect('/addcontact')->with('fail', 'Email bor');
+            return redirect('/addcontact')->with('fail', 'This email is in the database');
+        }
+        else if($check_phone_email==3){
+            return redirect('/addcontact')->with('fail', 'This name is in the database');
         }
 
         //save contact phones and emails

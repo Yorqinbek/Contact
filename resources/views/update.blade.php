@@ -408,6 +408,13 @@
         </div>
     @endif
 
+    {{-- Update contact error --}}
+    @if(session()->get('fail'))
+        <div class="alert alert-danger">
+            {{ session()->get('fail') }}
+        </div>
+    @endif
+
     <br>
     <div class="row">
         <div class="col">
